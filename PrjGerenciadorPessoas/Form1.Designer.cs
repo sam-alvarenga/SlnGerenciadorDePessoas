@@ -54,7 +54,7 @@
             lblMensagem.AutoSize = true;
             lblMensagem.Font = new Font("Segoe UI", 15F, FontStyle.Bold, GraphicsUnit.Point);
             lblMensagem.ForeColor = SystemColors.HotTrack;
-            lblMensagem.Location = new Point(38, 384);
+            lblMensagem.Location = new Point(28, 320);
             lblMensagem.Name = "lblMensagem";
             lblMensagem.Size = new Size(0, 28);
             lblMensagem.TabIndex = 7;
@@ -67,7 +67,7 @@
             btnVerPessoa.Name = "btnVerPessoa";
             btnVerPessoa.Size = new Size(124, 44);
             btnVerPessoa.TabIndex = 8;
-            btnVerPessoa.Text = "&Ver Pessoa";
+            btnVerPessoa.Text = "Ver Pessoa";
             btnVerPessoa.UseVisualStyleBackColor = true;
             btnVerPessoa.Click += btnVerPessoa_Click;
             // 
@@ -78,7 +78,7 @@
             btnCriarPessoa.Name = "btnCriarPessoa";
             btnCriarPessoa.Size = new Size(124, 44);
             btnCriarPessoa.TabIndex = 9;
-            btnCriarPessoa.Text = "&Ver Pessoa";
+            btnCriarPessoa.Text = "&Criar Pessoa";
             btnCriarPessoa.UseVisualStyleBackColor = true;
             btnCriarPessoa.Click += btnCriarPessoa_Click;
             // 
