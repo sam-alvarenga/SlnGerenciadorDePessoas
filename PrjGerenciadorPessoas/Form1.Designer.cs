@@ -189,6 +189,7 @@
             btnExcluirLista.TabIndex = 18;
             btnExcluirLista.Text = "&Excluir Lista";
             btnExcluirLista.UseVisualStyleBackColor = false;
+            btnExcluirLista.Click += btnExcluirLista_Click;
             // 
             // Form1
             // 
