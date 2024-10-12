@@ -1,4 +1,5 @@
 using SamAlvarenga.PrjHelloWorld.Models;
+using System.Drawing.Text;
 using System.Reflection;
 
 namespace PrjGerenciadorPessoas
@@ -20,26 +21,6 @@ namespace PrjGerenciadorPessoas
         private void Form1_Load(object sender, EventArgs e)
         {
             lstPessoas.DisplayMember = "Nome";
-
-        }
-
-        private void label1_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void textBox1_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void lblNome_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void lblIdade_Click(object sender, EventArgs e)
-        {
 
         }
 
@@ -107,16 +88,6 @@ namespace PrjGerenciadorPessoas
 
         }
 
-        private void txtNome_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void txtIdade_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
         private void lstPessoas_SelectedIndexChanged(object sender, EventArgs e)
         {
             btnSalvar.Enabled = true;
@@ -130,7 +101,7 @@ namespace PrjGerenciadorPessoas
             }
         }
 
-        
+
         private void btnExcluir_Click(object sender, EventArgs e)
         {
             //if (lstPessoas.SelectedItem == null)
@@ -146,14 +117,8 @@ namespace PrjGerenciadorPessoas
                 lstPessoas.Items.Remove(lstPessoas.SelectedItem); //Remover pessoa da lisBox
                 lstPessoas.SelectedItem = null; //remover da lista de pessoas 
 
-                txtNome.Clear();
-                txtIdade.Clear();
-                txtNome.Focus();
+                ResetForm();
 
-                //duvida
-                btnSalvar.Enabled = false;
-                btnExcluir.Enabled = false;
-                btnVerPessoa.Enabled = false;
             }
 
 
@@ -170,13 +135,8 @@ namespace PrjGerenciadorPessoas
                 this.pessoa.Idade = Convert.ToInt32(txtIdade.Text);
                 lstPessoas.Items[lstPessoas.SelectedIndex] = this.pessoa;
 
-                txtNome.Clear();
-                txtIdade.Clear();
-                txtNome.Focus();
+                ResetForm();
 
-                lstPessoas.SelectedItem = null;
-                btnSalvar.Enabled = false;
-                btnExcluir.Enabled = false;
 
                 MessageBox.Show(" Dados atualizados com sucesso!", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
@@ -185,26 +145,70 @@ namespace PrjGerenciadorPessoas
         //BOTÃO LIMPAR CAIXAS DADOS DA PESSOAS
         private void btnLimpar_Click(object sender, EventArgs e)
         {
+            ResetForm();
+        }
+
+        private void btnExcluirLista_Click(object sender, EventArgs e)
+        {
             DialogResult ApagarLista = MessageBox.Show("Tem certeza que deseja limpar a lista de pessoas?", "Atenção", MessageBoxButtons.YesNo, MessageBoxIcon.Hand);
 
             if (ApagarLista == DialogResult.Yes)
             {
                 lstPessoas.Items.Clear();
 
-                txtIdade.Clear();
-                txtNome.Clear();
-                txtNome.Focus();
-
-                btnSalvar.Enabled = false;
-                btnVerPessoa.Enabled = false;
-                btnExcluir.Enabled = false;
+                ResetForm();
             }
 
         }
 
-        private void btnExcluirLista_Click(object sender, EventArgs e)
+        private void ResetForm()
         {
+            txtIdade.Clear();
+            txtNome.Clear();
+            txtNome.Focus();
 
+            lstPessoas.SelectedItem = null; //desmarcando a seleção 
+            btnSalvar.Enabled = false;  //deixar inativo o botão
+            btnVerPessoa.Enabled = false; //deixar inativo o botão
+            btnExcluir.Enabled = false; //deixar inativo o botão
         }
+
+        private void btnGerar_Click(object sender, EventArgs e)
+        {
+            string conteudoArquivo = $"Nome: {this.pessoa.Nome} - Idade: {this.pessoa.getIdadeFormatada()}";
+            try
+            {
+
+                File.WriteAllText("relatorio/relatorio.txt", conteudoArquivo);
+
+                MessageBox.Show("Relatório gerado com sucesso", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                ResetForm();
+            }
+            catch (DirectoryNotFoundException ex)
+            {
+
+                MessageBox.Show("Houve um erro na criação do relatório. Pasta não encontrada!");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);  
+            }
+
+            
+            
+        }
+
+        private void gerarRelatorio(string conteudo)
+        {
+            File.WriteAllText("relatorio/relatorio.txt", conteudo);
+
+
+            MessageBox.Show("Relatório gerado com sucesso!", "Info", 
+                MessageBoxButtons.OK, MessageBoxIcon.Information);
+            
+            ResetForm();
+        }
+
     }
 }
