@@ -9,7 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="PrjHelloWord" Version="1.0.6" />
+    <PackageReference Include="PrjHelloWord" Version="1.0.7" />
   </ItemGroup>
 
 </Project>

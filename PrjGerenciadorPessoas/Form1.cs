@@ -179,7 +179,9 @@ namespace PrjGerenciadorPessoas
             try
             {
 
-                File.WriteAllText("relatorio/relatorio.txt", conteudoArquivo);
+                gerarRelatorioLista();
+                //gerarRelatorio(conteudoArquivo);
+                //File.WriteAllText("relatorio/relatorio.txt", conteudoArquivo);
 
                 MessageBox.Show("Relatório gerado com sucesso", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
@@ -207,6 +209,29 @@ namespace PrjGerenciadorPessoas
             MessageBox.Show("Relatório gerado com sucesso!", "Info", 
                 MessageBoxButtons.OK, MessageBoxIcon.Information);
             
+            ResetForm();
+        }
+
+        private void gerarRelatorioLista()
+        {
+
+            //lstPessoas.Items //total de pessoas
+            //laço de repetição
+            Pessoa p;
+            string linha = "";
+
+            for (int i = 0; i <lstPessoas.Items.Count; i++)
+            {
+                p = (Pessoa)lstPessoas.Items[i];
+                linha = $"{linha}" + $"{p.Nome} - {p.getIdadeFormatada()}\n";                
+            }
+
+            File.WriteAllText("relatorio/relatorio.txt", linha);
+
+
+            MessageBox.Show("Relatório gerado com sucesso!", "Info",
+                MessageBoxButtons.OK, MessageBoxIcon.Information);
+
             ResetForm();
         }
 
