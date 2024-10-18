@@ -1,6 +1,8 @@
 using SamAlvarenga.PrjHelloWorld.Models;
 using System.Drawing.Text;
 using System.Reflection;
+using System.Reflection.Metadata.Ecma335;
+using System.Text.Json;
 
 namespace PrjGerenciadorPessoas
 
@@ -20,6 +22,7 @@ namespace PrjGerenciadorPessoas
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            SerializarParajson();
             lstPessoas.DisplayMember = "Nome";
 
         }
@@ -175,23 +178,21 @@ namespace PrjGerenciadorPessoas
 
         private void btnGerar_Click(object sender, EventArgs e)
         {
+            /* gerarRelatorioLista()*/
+            
+            //File.WriteAllText("relatorio/relatorio.txt", conteudoArquivo);
             string conteudoArquivo = $"Nome: {this.pessoa.Nome} - Idade: {this.pessoa.getIdadeFormatada()}";
             try
             {
-
-                gerarRelatorioLista();
                 //gerarRelatorio(conteudoArquivo);
-                //File.WriteAllText("relatorio/relatorio.txt", conteudoArquivo);
+
+                gerarRelatorio(SerializarParaTxt());
 
                 MessageBox.Show("Relatório gerado com sucesso", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
                 ResetForm();
             }
-            catch (DirectoryNotFoundException ex)
-            {
-
-                MessageBox.Show("Houve um erro na criação do relatório. Pasta não encontrada!");
-            }
+           
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);  
@@ -203,16 +204,30 @@ namespace PrjGerenciadorPessoas
 
         private void gerarRelatorio(string conteudo)
         {
-            File.WriteAllText("relatorio/relatorio.txt", conteudo);
+            try
+            {
+                File.WriteAllText("relatorio/relatorio.txt", conteudo);
 
 
-            MessageBox.Show("Relatório gerado com sucesso!", "Info", 
-                MessageBoxButtons.OK, MessageBoxIcon.Information);
-            
-            ResetForm();
+                MessageBox.Show("Relatório gerado com sucesso!", "Info",
+                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                ResetForm();
+            }
+            catch (DirectoryNotFoundException ex)
+            {
+
+                MessageBox.Show("Houve um erro na criação do relatório. Pasta não encontrada!");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+               
+            }
         }
 
-        private void gerarRelatorioLista()
+        //Gerando relatorio em lista
+        private string SerializarParaTxt()
         {
 
             //lstPessoas.Items //total de pessoas
@@ -225,14 +240,45 @@ namespace PrjGerenciadorPessoas
                 p = (Pessoa)lstPessoas.Items[i];
                 linha = $"{linha}" + $"{p.Nome} - {p.getIdadeFormatada()}\n";                
             }
+            return linha;
 
-            File.WriteAllText("relatorio/relatorio.txt", linha);
+          
+
+            //File.WriteAllText("relatorio/relatorio.txt", linha);
 
 
-            MessageBox.Show("Relatório gerado com sucesso!", "Info",
-                MessageBoxButtons.OK, MessageBoxIcon.Information);
+            //MessageBox.Show("Relatório gerado com sucesso!", "Info",
+            //    MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-            ResetForm();
+            //ResetForm();
+        }
+
+        private string SerializarParajson()
+        {
+
+            //lstPessoas.Items //total de pessoas
+            //laço de repetição
+            Pessoa p;
+            string linha = "";
+
+            Pessoa pessoinha = new Pessoa("Juca", 34);
+
+            string json = JsonSerializer.Serialize(pessoinha, new JsonSerializerOptions { WriteIndented = true});
+
+            MessageBox.Show(json);
+            return "";
+
+
+
+            for (int i = 0; i < lstPessoas.Items.Count; i++)
+            {
+                p = (Pessoa)lstPessoas.Items[i];
+                linha = $"{linha}" + $"{p.Nome} - {p.getIdadeFormatada()}\n";
+            }
+            return linha;
+
+
+
         }
 
     }
