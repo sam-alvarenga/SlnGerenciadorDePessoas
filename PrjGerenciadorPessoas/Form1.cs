@@ -18,12 +18,14 @@ namespace PrjGerenciadorPessoas
         public Form1()
         {
             InitializeComponent();
+            lstPessoas.DisplayMember = "Nome";
         }
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            SerializarParajson();
-            lstPessoas.DisplayMember = "Nome";
+            cmbFormatoRelatorio.Text = "TXT";
+            
+
 
         }
 
@@ -179,27 +181,36 @@ namespace PrjGerenciadorPessoas
         private void btnGerar_Click(object sender, EventArgs e)
         {
             /* gerarRelatorioLista()*/
-            
+
             //File.WriteAllText("relatorio/relatorio.txt", conteudoArquivo);
-            string conteudoArquivo = $"Nome: {this.pessoa.Nome} - Idade: {this.pessoa.getIdadeFormatada()}";
+            //string conteudoArquivo = $"Nome: {this.pessoa.Nome} - Idade: {this.pessoa.getIdadeFormatada()}";
+
+
             try
             {
-                //gerarRelatorio(conteudoArquivo);
+                if (cmbFormatoRelatorio.Text == "TXT")
+                {
+                    //abrindo um arquivo dentro da pasta
+                    gerarRelatorio(SerializarParaTxt());
+                    //gerarRelatorio(conteudoArquivo);
 
-                gerarRelatorio(SerializarParaTxt());
+                    ResetForm();
 
-                MessageBox.Show("Relatório gerado com sucesso", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
-                ResetForm();
+                }
+                else
+                {
+                    gerarRelatorio(SerializarParajson());
+                }
+     
             }
-           
+
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);  
+                MessageBox.Show(ex.Message, "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 
-            
-            
+
+
         }
 
         private void gerarRelatorio(string conteudo)
@@ -209,8 +220,7 @@ namespace PrjGerenciadorPessoas
                 File.WriteAllText("relatorio/relatorio.txt", conteudo);
 
 
-                MessageBox.Show("Relatório gerado com sucesso!", "Info",
-                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show($"Relatório gerado com sucesso no formato {cmbFormatoRelatorio.Text}", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
                 ResetForm();
             }
@@ -222,7 +232,7 @@ namespace PrjGerenciadorPessoas
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
-               
+
             }
         }
 
@@ -232,17 +242,18 @@ namespace PrjGerenciadorPessoas
 
             //lstPessoas.Items //total de pessoas
             //laço de repetição
-            Pessoa p;
+            Pessoa pessoa;
             string linha = "";
 
-            for (int i = 0; i <lstPessoas.Items.Count; i++)
+
+            for (int i = 0; i < lstPessoas.Items.Count; i++)
             {
-                p = (Pessoa)lstPessoas.Items[i];
-                linha = $"{linha}" + $"{p.Nome} - {p.getIdadeFormatada()}\n";                
+                pessoa = (Pessoa)lstPessoas.Items[i];//casting
+                linha = $"{linha}" + $"{pessoa.Nome} - {pessoa.getIdadeFormatada()}\n";
             }
             return linha;
 
-          
+
 
             //File.WriteAllText("relatorio/relatorio.txt", linha);
 
@@ -258,24 +269,23 @@ namespace PrjGerenciadorPessoas
 
             //lstPessoas.Items //total de pessoas
             //laço de repetição
-            Pessoa p;
-            string linha = "";
 
-            Pessoa pessoinha = new Pessoa("Juca", 34);
-
-            string json = JsonSerializer.Serialize(pessoinha, new JsonSerializerOptions { WriteIndented = true});
-
-            MessageBox.Show(json);
-            return "";
+            string json = "";
+            Pessoa pessoa;
 
 
+            //List<Pessoa> listaPessoas: declarando uma variável do tipo lista de pessoas
+            // new List<Pessoa>();: instanciando uma lista de pessoas e atribuindo à variável
+            List<Pessoa> listaPessoas = new List<Pessoa>();
 
             for (int i = 0; i < lstPessoas.Items.Count; i++)
             {
-                p = (Pessoa)lstPessoas.Items[i];
-                linha = $"{linha}" + $"{p.Nome} - {p.getIdadeFormatada()}\n";
+                pessoa = (Pessoa)lstPessoas.Items[i];
+                listaPessoas.Add(pessoa);
             }
-            return linha;
+            json = JsonSerializer.Serialize(listaPessoas, new JsonSerializerOptions { WriteIndented = true });
+
+            return json;
 
 
 
