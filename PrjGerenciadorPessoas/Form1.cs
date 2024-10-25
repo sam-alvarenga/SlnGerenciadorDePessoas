@@ -217,18 +217,22 @@ namespace PrjGerenciadorPessoas
         {
             try
             {
-                File.WriteAllText("relatorio/relatorio.txt", conteudo);
+                //string pastaRelatorio = "relatorio";
 
+                Directory.CreateDirectory("relatorio"); //Criando nova pasta fixa do Relatório
+
+                File.WriteAllText("relatorio/relatorio.txt", conteudo);
+                
 
                 MessageBox.Show($"Relatório gerado com sucesso no formato {cmbFormatoRelatorio.Text}", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
                 ResetForm();
             }
-            catch (DirectoryNotFoundException ex)
-            {
+            //catch (DirectoryNotFoundException ex)
+            //{
 
-                MessageBox.Show("Houve um erro na criação do relatório. Pasta não encontrada!");
-            }
+            //    MessageBox.Show("Houve um erro na criação do relatório. Pasta não encontrada!");
+            //}
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
