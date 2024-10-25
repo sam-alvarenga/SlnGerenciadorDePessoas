@@ -198,6 +198,8 @@ namespace PrjGerenciadorPessoas
                 else
                 {
                     gerarRelatorio(SerializarParajson());
+                    
+
                 }
      
             }
@@ -281,7 +283,11 @@ namespace PrjGerenciadorPessoas
                 pessoa = (Pessoa)lstPessoas.Items[i];
                 listaPessoas.Add(pessoa);
             }
-            json = JsonSerializer.Serialize(listaPessoas, new JsonSerializerOptions { WriteIndented = true });
+
+            // Formatting.Indented: no pacote newtonsolf é usado para fazer a indetação
+            //serializando o objeto(listaPessoas) em Json 
+            json = JsonConvert.SerializeObject(listaPessoas, Formatting.Indented); 
+
 
             return json;
 
