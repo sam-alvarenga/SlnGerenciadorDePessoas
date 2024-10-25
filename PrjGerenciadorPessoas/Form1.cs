@@ -1,8 +1,6 @@
 using SamAlvarenga.PrjHelloWorld.Models;
-using System.Drawing.Text;
-using System.Reflection;
-using System.Reflection.Metadata.Ecma335;
-using System.Text.Json;
+using Newtonsoft.Json;
+//using System.Text.Json;
 
 namespace PrjGerenciadorPessoas
 
