@@ -1,5 +1,6 @@
 using SamAlvarenga.PrjHelloWorld.Models;
 using Newtonsoft.Json;
+using System.Windows.Forms;
 //using System.Text.Json;
 
 namespace PrjGerenciadorPessoas
@@ -221,7 +222,18 @@ namespace PrjGerenciadorPessoas
 
                 Directory.CreateDirectory("relatorio"); //Criando nova pasta fixa do Relatório
 
-                File.WriteAllText("relatorio/relatorio.txt", conteudo);
+                SaveFileDialog salvandoArquivo = new SaveFileDialog();
+
+                salvandoArquivo.Filter = "Arquivos de Texto (*.txt)|*.txt";
+
+                if (salvandoArquivo.ShowDialog() == DialogResult.OK)
+                {
+                    File.WriteAllText(salvandoArquivo.FileName, conteudo);
+
+                    
+                }
+
+               // File.WriteAllText("relatorio/relatorio.txt", conteudo);
                 
 
                 MessageBox.Show($"Relatório gerado com sucesso no formato {cmbFormatoRelatorio.Text}", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
